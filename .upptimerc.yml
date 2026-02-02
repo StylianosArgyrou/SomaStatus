@@ -1,0 +1,35 @@
+owner: StylianosArgyrou
+repo: SomaStatus
+
+sites:
+  - name: Soma API
+    url: https://soma-api-staging.redplant-c3b45e98.westeurope.azurecontainerapps.io/health
+    expectedStatusCodes:
+      - 200
+
+  - name: Soma Website
+    url: https://somaweather.com
+    expectedStatusCodes:
+      - 200
+      - 301
+
+status-website:
+  cname: status.somaweather.com
+  name: Soma Status
+  theme: dark
+  navbar:
+    - title: Soma Weather
+      href: https://somaweather.com
+
+workflowSchedule:
+  uptime: "*/5 * * * *"
+  responseTime: "*/5 * * * *"
+  updates: "0 0 * * *"
+
+i18n:
+  activeIncidents: Active Incidents
+  allSystemsOperational: All Systems Operational
+  incidentReport: Incident Report
+
+assignees:
+  - StylianosArgyrou
