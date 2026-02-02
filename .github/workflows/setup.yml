@@ -5,6 +5,10 @@ on:
       - ".upptimerc.yml"
   workflow_dispatch:
 
+permissions:
+  contents: write
+  issues: write
+
 jobs:
   setup:
     name: Setup
@@ -15,4 +19,4 @@ jobs:
         with:
           command: run-setup
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: ${{ secrets.GITHUB_TOKEN }}

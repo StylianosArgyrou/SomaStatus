@@ -4,6 +4,9 @@ on:
     - cron: "*/5 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   response-time:
     name: Check response time
@@ -14,4 +17,4 @@ jobs:
         with:
           command: run-response-time
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: ${{ secrets.GITHUB_TOKEN }}

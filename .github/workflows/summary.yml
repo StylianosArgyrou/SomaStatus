@@ -4,6 +4,9 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   summary:
     name: Generate summary
@@ -14,4 +17,4 @@ jobs:
         with:
           command: run-summary
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
