@@ -1,0 +1,74 @@
+---
+import type { GroupStatus } from '../../lib/types';
+import ComponentRow from './ComponentRow.astro';
+import { formatUptime, formatDate } from '../../lib/uptime';
+import { COLORS, getUptimeColor } from '../../lib/constants';
+
+interface Props {
+  group: GroupStatus;
+  isExternal?: boolean;
+}
+
+const { group, isExternal = false } = Astro.props;
+
+const statusColor = {
+  up: COLORS.up,
+  degraded: COLORS.degraded,
+  down: COLORS.down,
+}[group.status];
+
+const uptimeColor = getUptimeColor(group.uptimePercent);
+
+// Get date range from the first component's daily data (for the shared date labels)
+const firstComp = group.components[0];
+const dateStart = firstComp?.dailyData?.[0]?.date;
+const dateEnd = firstComp?.dailyData?.[firstComp.dailyData.length - 1]?.date;
+---
+
+<!-- #6 Collapsible group with <details> -->
+<details class="group-details glass overflow-hidden" open>
+  <summary
+    class="px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-white/[0.02] transition-colors"
+    style={`border-left: 3px solid ${statusColor};`}
+  >
+    <div class="flex items-center gap-3">
+      <!-- #6 Chevron icon -->
+      <svg class="chevron-icon w-3.5 h-3.5 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+      <h2 class="text-sm font-semibold text-text-primary uppercase tracking-wider">{group.name}</h2>
+      {group.description && (
+        <span class="hidden sm:inline text-xs text-text-muted">— {group.description}</span>
+      )}
+    </div>
+    {!isExternal && (
+      <span class="font-mono text-xs font-medium" style={`color: ${uptimeColor}`}>
+        {formatUptime(group.uptimePercent)}
+      </span>
+    )}
+  </summary>
+
+  <div class="border-t border-border-subtle/30">
+    {/* #2 Shared date labels — only once per group */}
+    {!isExternal && dateStart && dateEnd && (
+      <div class="px-5 pt-3 pb-0">
+        <div class="flex items-center gap-4">
+          <div class="w-52 shrink-0 hidden sm:block"></div>
+          <div class="w-[88px] shrink-0 hidden sm:block"></div>
+          <div class="w-16 shrink-0 hidden sm:block"></div>
+          <div class="flex-1 min-w-0 flex justify-between text-[10px] text-text-muted">
+            <span>{formatDate(dateStart)}</span>
+            <span>Today</span>
+          </div>
+          <div class="w-16 shrink-0 hidden sm:block"></div>
+        </div>
+      </div>
+    )}
+
+    <div class="px-5 py-1 divide-y divide-border-subtle/20">
+      {group.components.map(component => (
+        <ComponentRow component={component} showUptimeBar={!isExternal} />
+      ))}
+    </div>
+  </div>
+</details>

@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import OverallStatus from '../components/status/OverallStatus.astro';
+import ComponentGroup from '../components/status/ComponentGroup.astro';
+import ActiveIncidents from '../components/incidents/ActiveIncidents.astro';
+import IncidentTimeline from '../components/incidents/IncidentTimeline.astro';
+import SubscribeSection from '../components/subscribe/SubscribeSection.astro';
+import { buildGroupStatuses, getOverallStatus, loadActiveIncidents, getRecentIncidents, getLatestCheck } from '../lib/data';
+import { PAST_INCIDENTS_DAYS } from '../lib/constants';
+import { timeAgo } from '../lib/uptime';
+
+const groups = buildGroupStatuses();
+const overall = getOverallStatus(groups);
+const activeIncidents = loadActiveIncidents();
+const recentIncidents = getRecentIncidents(PAST_INCIDENTS_DAYS);
+const latestCheck = getLatestCheck();
+const lastCheckedStr = latestCheck ? timeAgo(latestCheck.timestamp) : null;
+
+// Separate internal groups from external
+const internalGroups = groups.filter(g => g.id !== 'external');
+const externalGroup = groups.find(g => g.id === 'external');
+
+// #5 Count component statuses across all groups
+const allComponents = groups.flatMap(g => g.components);
+const counts = {
+  up: allComponents.filter(c => c.status === 'up').length,
+  degraded: allComponents.filter(c => c.status === 'degraded').length,
+  down: allComponents.filter(c => c.status === 'down').length,
+};
+---
+
+<Layout>
+  <Header />
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-5">
+    <!-- Overall Status Hero -->
+    <OverallStatus status={overall.status} label={overall.label} lastChecked={lastCheckedStr} counts={counts} />
+
+    <!-- Active Incidents -->
+    <ActiveIncidents incidents={activeIncidents} />
+
+    <!-- Service Groups -->
+    {internalGroups.map(group => (
+      <ComponentGroup group={group} />
+    ))}
+
+    <!-- External Dependencies -->
+    {externalGroup && (
+      <ComponentGroup group={externalGroup} isExternal={true} />
+    )}
+
+    <!-- Past Incidents -->
+    <IncidentTimeline incidentsByDate={recentIncidents} />
+
+    <!-- Subscribe -->
+    <SubscribeSection />
+  </main>
+
+  <Footer />
+</Layout>

@@ -1,0 +1,52 @@
+---
+import type { DayData } from '../../lib/types';
+import { buildUptimeBarData, formatDate, formatUptime, formatResponseTime } from '../../lib/uptime';
+
+interface Props {
+  dailyData: DayData[];
+  showDateLabels?: boolean;
+}
+
+const { dailyData, showDateLabels = true } = Astro.props;
+const barData = buildUptimeBarData(dailyData);
+
+const barWidth = 4;
+const barGap = 1;
+const barHeight = 34;
+const svgWidth = (barWidth + barGap) * barData.length;
+---
+
+<div class="w-full">
+  <svg
+    viewBox={`0 0 ${svgWidth} ${barHeight}`}
+    class="w-full"
+    style="height: 34px;"
+    preserveAspectRatio="none"
+    role="img"
+    aria-label="90-day uptime history"
+  >
+    {barData.map((day, i) => {
+      const tooltip = day.hasData
+        ? `${formatDate(day.date)}: ${formatUptime(day.uptimePercent)} uptime, ${formatResponseTime(day.avgResponseTime)} avg`
+        : `${formatDate(day.date)}: No data`;
+      return (
+        <rect
+          x={i * (barWidth + barGap)}
+          y="0"
+          width={barWidth}
+          height={barHeight}
+          rx="1"
+          fill={day.color}
+        >
+          <title>{tooltip}</title>
+        </rect>
+      );
+    })}
+  </svg>
+  {showDateLabels && (
+    <div class="flex justify-between mt-1 text-[10px] text-text-muted">
+      <span>{barData.length > 0 ? formatDate(barData[0].date) : ''}</span>
+      <span>Today</span>
+    </div>
+  )}
+</div>

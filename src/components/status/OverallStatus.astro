@@ -1,0 +1,84 @@
+---
+import { COLORS } from '../../lib/constants';
+
+interface Props {
+  status: 'up' | 'degraded' | 'down';
+  label: string;
+  lastChecked: string | null;
+  counts: { up: number; degraded: number; down: number };
+}
+
+const { status, label, lastChecked, counts } = Astro.props;
+
+const statusConfig = {
+  up: {
+    color: COLORS.up,
+    glowColor: 'rgba(34, 197, 94, 0.35)',
+    borderGlow: '0 0 40px -10px rgba(34, 197, 94, 0.2)',
+    topBorder: 'rgba(34, 197, 94, 0.4)',
+    heroClass: 'hero-gradient-up',
+  },
+  degraded: {
+    color: COLORS.degraded,
+    glowColor: 'rgba(234, 179, 8, 0.35)',
+    borderGlow: '0 0 40px -10px rgba(234, 179, 8, 0.2)',
+    topBorder: 'rgba(234, 179, 8, 0.4)',
+    heroClass: 'hero-gradient-degraded',
+  },
+  down: {
+    color: COLORS.down,
+    glowColor: 'rgba(239, 68, 68, 0.35)',
+    borderGlow: '0 0 40px -10px rgba(239, 68, 68, 0.2)',
+    topBorder: 'rgba(239, 68, 68, 0.4)',
+    heroClass: 'hero-gradient-down',
+  },
+};
+
+const config = statusConfig[status];
+const total = counts.up + counts.degraded + counts.down;
+---
+
+<div
+  class="relative overflow-hidden glass p-8 sm:p-10"
+  style={`box-shadow: ${config.borderGlow}; border-top: 2px solid ${config.topBorder};`}
+>
+  <div class={config.heroClass}></div>
+  <div class="relative">
+    <div class="flex items-center gap-3.5 mb-2">
+      <!-- Animated glow dot -->
+      <span
+        class:list={['inline-block w-3.5 h-3.5 rounded-full shrink-0', { 'status-glow': true }]}
+        style={`background-color: ${config.color}; --glow-color: ${config.glowColor};`}
+      ></span>
+      <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{label}</h1>
+    </div>
+
+    <!-- #5 Summary counts bar -->
+    <div class="flex items-center gap-4 mt-3 ml-7">
+      {counts.up > 0 && (
+        <span class="flex items-center gap-1.5 text-sm">
+          <span class="w-2 h-2 rounded-full bg-green-500"></span>
+          <span class="text-text-secondary"><strong class="text-green-400 font-semibold">{counts.up}</strong> operational</span>
+        </span>
+      )}
+      {counts.degraded > 0 && (
+        <span class="flex items-center gap-1.5 text-sm">
+          <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+          <span class="text-text-secondary"><strong class="text-yellow-400 font-semibold">{counts.degraded}</strong> degraded</span>
+        </span>
+      )}
+      {counts.down > 0 && (
+        <span class="flex items-center gap-1.5 text-sm">
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+          <span class="text-text-secondary"><strong class="text-red-400 font-semibold">{counts.down}</strong> down</span>
+        </span>
+      )}
+    </div>
+
+    {lastChecked && (
+      <p class="text-text-muted text-xs mt-3 ml-7">
+        Last checked {lastChecked}
+      </p>
+    )}
+  </div>
+</div>

@@ -1,0 +1,23 @@
+---
+import { BRAND } from '../../lib/constants';
+---
+
+<footer class="border-t border-border-subtle/50 mt-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-text-muted">
+      <div class="flex items-center gap-2">
+        <div class="w-4 h-4 rounded bg-gradient-to-br from-soma-blue to-soma-purple flex items-center justify-center">
+          <span class="text-white text-[8px] font-bold">S</span>
+        </div>
+        <span>Powered by {BRAND.name}</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/rss.xml" class="hover:text-text-secondary transition-colors">RSS Feed</a>
+        <span class="text-border-subtle">|</span>
+        <a href={BRAND.siteUrl} class="hover:text-text-secondary transition-colors" target="_blank" rel="noopener noreferrer">Website</a>
+        <span class="text-border-subtle">|</span>
+        <a href={BRAND.githubUrl} class="hover:text-text-secondary transition-colors" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>

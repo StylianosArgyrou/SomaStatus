@@ -1,0 +1,57 @@
+---
+import type { Incident } from '../../lib/types';
+import { SEVERITY_COLORS, INCIDENT_STATUS_LABELS } from '../../lib/constants';
+
+interface Props {
+  incident: Incident;
+}
+
+const { incident } = Astro.props;
+
+const severityColor = SEVERITY_COLORS[incident.severity] || '#EAB308';
+const isActive = incident.status !== 'resolved';
+
+function formatTimestamp(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  });
+}
+---
+
+<div class="glass p-5">
+  <div class="flex items-start justify-between gap-4 mb-3">
+    <h3 class="text-sm font-semibold text-text-primary">{incident.title}</h3>
+    <span
+      class="shrink-0 text-xs font-medium px-2 py-0.5 rounded-full"
+      style={`background-color: ${severityColor}20; color: ${severityColor}`}
+    >
+      {incident.severity}
+    </span>
+  </div>
+
+  <div class="space-y-3">
+    {incident.updates.slice().reverse().map(update => (
+      <div class="flex gap-3 text-sm">
+        <div class="flex flex-col items-center">
+          <span
+            class:list={['w-2 h-2 rounded-full mt-1.5 shrink-0', { 'pulse-dot': isActive && update === incident.updates[incident.updates.length - 1] }]}
+            style={`background-color: ${severityColor}`}
+          ></span>
+          <div class="w-px flex-1 bg-border-subtle/50 mt-1"></div>
+        </div>
+        <div class="pb-3 min-w-0">
+          <div class="flex items-center gap-2 mb-0.5">
+            <span class="font-medium text-text-primary">{INCIDENT_STATUS_LABELS[update.status]}</span>
+            <span class="text-text-muted text-xs">{formatTimestamp(update.timestamp)}</span>
+          </div>
+          <p class="text-text-secondary text-sm">{update.message}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

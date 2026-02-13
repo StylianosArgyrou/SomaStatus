@@ -1,0 +1,86 @@
+{
+  "baseUrl": "https://soma-api-staging.redplant-c3b45e98.westeurope.azurecontainerapps.io",
+  "testLat": 35.18,
+  "testLon": 33.38,
+  "groups": [
+    {
+      "id": "infrastructure",
+      "name": "Infrastructure",
+      "description": "Core platform services",
+      "components": [
+        { "id": "api-health", "name": "API Server", "endpoint": "/health", "timeout": 10000, "validate": { "field": "status", "value": "healthy" } },
+        { "id": "api-liveness", "name": "API Liveness", "endpoint": "/health/live", "timeout": 10000 },
+        { "id": "cache-system", "name": "Cache System", "endpoint": "/health/cache", "timeout": 10000 },
+        { "id": "website", "name": "Website", "url": "https://somaweather.com", "timeout": 10000, "expectedStatusCodes": [200, 301, 308] }
+      ]
+    },
+    {
+      "id": "core-weather",
+      "name": "Core Weather",
+      "description": "Primary weather data services",
+      "components": [
+        { "id": "resolve", "name": "Weather Resolution", "endpoint": "/v1/resolve", "params": true, "timeout": 15000 },
+        { "id": "precipitation", "name": "Precipitation Forecast", "endpoint": "/v1/precipitation-forecast", "params": true, "timeout": 10000 },
+        { "id": "minutecast", "name": "Minutecast", "endpoint": "/v1/minutecast", "params": true, "timeout": 10000 },
+        { "id": "historical", "name": "Historical Weather", "endpoint": "/v1/historical", "params": true, "timeout": 15000 },
+        { "id": "radar", "name": "Weather Radar", "endpoint": "/v1/radar", "params": true, "timeout": 10000 }
+      ]
+    },
+    {
+      "id": "alerts-safety",
+      "name": "Alerts & Safety",
+      "description": "Alert and safety monitoring services",
+      "components": [
+        { "id": "smart-alerts", "name": "Smart Alerts", "endpoint": "/v1/alerts/smart", "params": true, "timeout": 10000 },
+        { "id": "severe", "name": "Severe Weather", "endpoint": "/v1/severe", "params": true, "timeout": 10000 },
+        { "id": "aqi", "name": "Air Quality", "endpoint": "/v1/aqi", "params": true, "timeout": 10000 },
+        { "id": "safety", "name": "Safety Index", "endpoint": "/v1/safety", "params": true, "timeout": 10000 }
+      ]
+    },
+    {
+      "id": "disasters",
+      "name": "Natural Disasters",
+      "description": "Earthquake, wildfire, and storm tracking",
+      "components": [
+        { "id": "earthquakes", "name": "Earthquakes", "endpoint": "/v1/earthquakes", "params": true, "timeout": 10000 },
+        { "id": "wildfires", "name": "Wildfires", "endpoint": "/v1/wildfires", "params": true, "timeout": 10000 },
+        { "id": "storms", "name": "Storm Tracker", "endpoint": "/v1/storms", "params": true, "timeout": 10000 }
+      ]
+    },
+    {
+      "id": "marine",
+      "name": "Marine",
+      "description": "Ocean and marine data services",
+      "components": [
+        { "id": "marine", "name": "Marine Data", "endpoint": "/v1/marine", "params": true, "timeout": 10000 }
+      ]
+    },
+    {
+      "id": "space-astronomy",
+      "name": "Space & Astronomy",
+      "description": "Space weather and astronomy services",
+      "components": [
+        { "id": "aurora", "name": "Aurora Forecast", "endpoint": "/v1/aurora", "params": true, "timeout": 10000 },
+        { "id": "space-weather", "name": "Space Weather", "endpoint": "/v1/space-weather", "params": false, "timeout": 10000 },
+        { "id": "iss", "name": "ISS Tracking", "endpoint": "/v1/iss", "params": true, "timeout": 30000 },
+        { "id": "apod", "name": "Astronomy Picture", "endpoint": "/v1/apod", "params": false, "timeout": 10000 }
+      ]
+    },
+    {
+      "id": "lifestyle-health",
+      "name": "Lifestyle & Health",
+      "description": "Health and lifestyle data services",
+      "components": [
+        { "id": "pollen", "name": "Pollen", "endpoint": "/v1/pollen", "params": true, "timeout": 10000 },
+        { "id": "gardening", "name": "Gardening", "endpoint": "/v1/gardening", "params": true, "timeout": 10000 },
+        { "id": "aviation", "name": "Aviation Weather", "endpoint": "/v1/aviation", "params": true, "timeout": 10000 }
+      ]
+    }
+  ],
+  "external": [
+    { "id": "open-meteo", "name": "Open-Meteo API", "url": "https://api.open-meteo.com/v1/forecast?latitude=35.18&longitude=33.38&current_weather=true", "timeout": 10000 },
+    { "id": "usgs", "name": "USGS Earthquake API", "url": "https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson", "timeout": 10000 },
+    { "id": "noaa", "name": "NOAA Weather API", "url": "https://api.weather.gov", "timeout": 10000 },
+    { "id": "nasa", "name": "NASA APIs", "url": "https://api.nasa.gov", "timeout": 10000 }
+  ]
+}

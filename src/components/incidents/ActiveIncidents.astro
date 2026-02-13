@@ -1,0 +1,25 @@
+---
+import type { Incident } from '../../lib/types';
+import IncidentCard from './IncidentCard.astro';
+
+interface Props {
+  incidents: Incident[];
+}
+
+const { incidents } = Astro.props;
+const activeIncidents = incidents.filter(i => i.status !== 'resolved');
+---
+
+{activeIncidents.length > 0 && (
+  <section>
+    <h2 class="text-sm font-semibold text-text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-red-500 pulse-dot"></span>
+      Active Incidents
+    </h2>
+    <div class="space-y-4">
+      {activeIncidents.map(incident => (
+        <IncidentCard incident={incident} />
+      ))}
+    </div>
+  </section>
+)}

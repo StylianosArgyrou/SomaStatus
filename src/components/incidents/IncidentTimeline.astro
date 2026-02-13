@@ -1,0 +1,81 @@
+---
+import type { Incident } from '../../lib/types';
+import { SEVERITY_COLORS, INCIDENT_STATUS_LABELS } from '../../lib/constants';
+import { formatDateFull } from '../../lib/uptime';
+
+interface Props {
+  incidentsByDate: Map<string, Incident[]>;
+}
+
+const { incidentsByDate } = Astro.props;
+
+// Show last 7 days in reverse chronological order
+const dates = [...incidentsByDate.keys()].slice(-7).reverse();
+
+// Check if ALL days have zero incidents
+const allClear = dates.every(date => {
+  const incidents = incidentsByDate.get(date) || [];
+  return incidents.filter(i => i.status === 'resolved').length === 0;
+});
+
+// Find days that DO have incidents
+const daysWithIncidents = dates.filter(date => {
+  const incidents = incidentsByDate.get(date) || [];
+  return incidents.filter(i => i.status === 'resolved').length > 0;
+});
+---
+
+<section>
+  <h2 class="text-sm font-semibold text-text-primary uppercase tracking-wider mb-4">
+    Past Incidents
+  </h2>
+
+  {allClear ? (
+    <!-- #7 Consolidated "all clear" message -->
+    <div class="glass p-6 text-center">
+      <div class="flex items-center justify-center gap-2.5 mb-1.5">
+        <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-sm font-medium text-text-primary">No incidents in the past 7 days</span>
+      </div>
+      <p class="text-xs text-text-muted">All systems have been operating normally.</p>
+    </div>
+  ) : (
+    <div class="space-y-0">
+      {dates.map(date => {
+        const incidents = incidentsByDate.get(date) || [];
+        const resolvedIncidents = incidents.filter(i => i.status === 'resolved');
+
+        return (
+          <div class="py-4 border-b border-border-subtle/30 last:border-0">
+            <h3 class="text-sm font-medium text-text-secondary mb-2">{formatDateFull(date)}</h3>
+            {resolvedIncidents.length === 0 ? (
+              <p class="text-sm text-text-muted">No incidents reported.</p>
+            ) : (
+              <div class="space-y-3">
+                {resolvedIncidents.map(incident => (
+                  <div class="pl-4 border-l-2 border-border-subtle/50">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span
+                        class="text-xs font-medium px-1.5 py-0.5 rounded"
+                        style={`background-color: ${SEVERITY_COLORS[incident.severity]}20; color: ${SEVERITY_COLORS[incident.severity]}`}
+                      >
+                        {incident.severity}
+                      </span>
+                      <span class="text-sm font-medium text-text-primary">{incident.title}</span>
+                    </div>
+                    <p class="text-xs text-text-muted">
+                      {INCIDENT_STATUS_LABELS[incident.status]}
+                      {incident.updates.length > 0 && ` — ${incident.updates[incident.updates.length - 1].message}`}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  )}
+</section>
