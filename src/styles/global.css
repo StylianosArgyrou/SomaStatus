@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@theme {
+  /* Soma Brand Colors */
+  --color-soma-blue: #2563EB;
+  --color-soma-purple: #8B5CF6;
+  --color-soma-orange: #F97316;
+  --color-soma-green: #22C55E;
+  --color-soma-cyan: #06B6D4;
+
+  /* Dark Theme Background */
+  --color-bg-dark: #0f172a;
+  --color-bg-darker: #020617;
+  --color-bg-card: rgba(255, 255, 255, 0.05);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.08);
+
+  /* Text Colors */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+
+  /* Border Colors */
+  --color-border-subtle: rgba(255, 255, 255, 0.1);
+  --color-border-accent: rgba(255, 255, 255, 0.2);
+
+  /* Status Colors */
+  --color-status-up: #22C55E;
+  --color-status-degraded: #EAB308;
+  --color-status-down: #EF4444;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glass Effect — #8 polish: slightly larger radius */
+.glass {
+  background: var(--color-bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 1.25rem;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-hover:hover {
+  background: var(--color-bg-card-hover);
+  border-color: var(--color-border-accent);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-soma-blue) 0%, var(--color-soma-purple) 50%, var(--color-soma-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* #8 smooth transitions on all interactive elements */
+a, button, summary {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+/* Pulse animation for active incidents */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* #1 Status glow ring animation */
+@keyframes glow-ring {
+  0%, 100% { box-shadow: 0 0 0 0 var(--glow-color); }
+  50% { box-shadow: 0 0 12px 4px var(--glow-color); }
+}
+
+.status-glow {
+  animation: glow-ring 3s ease-in-out infinite;
+}
+
+/* #1 Hero gradient — status-aware */
+.hero-gradient-up {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(34, 197, 94, 0.08), transparent);
+  pointer-events: none;
+}
+
+.hero-gradient-degraded {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(234, 179, 8, 0.08), transparent);
+  pointer-events: none;
+}
+
+.hero-gradient-down {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(239, 68, 68, 0.08), transparent);
+  pointer-events: none;
+}
+
+/* #6 Collapsible groups — style the native <details> */
+details.group-details > summary {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+details.group-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.group-details > summary::marker {
+  display: none;
+  content: '';
+}
+
+details.group-details > summary .chevron-icon {
+  transition: transform 0.2s ease;
+}
+
+details.group-details[open] > summary .chevron-icon {
+  transform: rotate(90deg);
+}

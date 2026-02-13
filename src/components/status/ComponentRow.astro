@@ -1,0 +1,64 @@
+---
+import type { ComponentStatus } from '../../lib/types';
+import StatusBadge from './StatusBadge.astro';
+import UptimeBar from './UptimeBar.astro';
+import { formatUptime, formatResponseTime } from '../../lib/uptime';
+import { getUptimeColor } from '../../lib/constants';
+
+interface Props {
+  component: ComponentStatus;
+  showUptimeBar?: boolean;
+}
+
+const { component, showUptimeBar = true } = Astro.props;
+const uptimeColor = getUptimeColor(component.uptimePercent);
+---
+
+<div class="group py-2.5 px-4 -mx-4 rounded-lg hover:bg-white/[0.03] transition-all duration-150">
+  <!-- Mobile layout -->
+  <div class="flex items-center justify-between mb-2 sm:hidden">
+    <div class="flex items-center gap-2 min-w-0">
+      <a href={`/history/${component.id}`} class="text-sm font-medium text-text-primary hover:text-soma-blue transition-colors truncate">
+        {component.name}
+      </a>
+    </div>
+    <StatusBadge status={component.status} />
+  </div>
+
+  <!-- Desktop layout — #2 tighter, #4 colored uptime -->
+  <div class="hidden sm:flex sm:items-center sm:gap-4">
+    <div class="flex items-center gap-3 w-52 shrink-0">
+      <a href={`/history/${component.id}`} class="text-sm font-medium text-text-primary hover:text-soma-blue transition-colors truncate">
+        {component.name}
+      </a>
+    </div>
+    <div class="w-[88px] shrink-0">
+      <StatusBadge status={component.status} />
+    </div>
+    <div class="flex items-center gap-1 w-16 shrink-0">
+      <span class="font-mono text-xs text-text-muted">{formatResponseTime(component.avgResponseTime)}</span>
+    </div>
+    {showUptimeBar && (
+      <div class="flex-1 min-w-0">
+        <UptimeBar dailyData={component.dailyData} showDateLabels={false} />
+      </div>
+    )}
+    <div class="w-16 text-right shrink-0">
+      <!-- #4 color-coded uptime percentage -->
+      <span class="font-mono text-xs font-medium" style={`color: ${uptimeColor}`}>
+        {formatUptime(component.uptimePercent)}
+      </span>
+    </div>
+  </div>
+
+  <!-- Mobile uptime bar -->
+  {showUptimeBar && (
+    <div class="sm:hidden">
+      <div class="flex items-center justify-between mb-1">
+        <span class="font-mono text-xs text-text-muted">{formatResponseTime(component.avgResponseTime)}</span>
+        <span class="font-mono text-xs font-medium" style={`color: ${uptimeColor}`}>{formatUptime(component.uptimePercent)}</span>
+      </div>
+      <UptimeBar dailyData={component.dailyData} showDateLabels={true} />
+    </div>
+  )}
+</div>

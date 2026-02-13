@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import StatusBadge from '../../components/status/StatusBadge.astro';
+import UptimeBar from '../../components/status/UptimeBar.astro';
+import ResponseTime from '../../components/status/ResponseTime.astro';
+import { buildGroupStatuses, loadConfig } from '../../lib/data';
+import { formatUptime, formatResponseTime, formatDateFull } from '../../lib/uptime';
+import { COLORS, getUptimeColor } from '../../lib/constants';
+import type { ComponentStatus } from '../../lib/types';
+
+export function getStaticPaths() {
+  const config = loadConfig();
+  const ids: string[] = [];
+
+  for (const group of config.groups) {
+    for (const comp of group.components) {
+      ids.push(comp.id);
+    }
+  }
+  for (const ext of config.external) {
+    ids.push(ext.id);
+  }
+
+  return ids.map(id => ({ params: { component: id } }));
+}
+
+const { component: componentId } = Astro.params;
+const groups = buildGroupStatuses();
+
+// Find the component across all groups
+let comp: ComponentStatus | undefined;
+let groupName = '';
+for (const group of groups) {
+  const found = group.components.find(c => c.id === componentId);
+  if (found) {
+    comp = found;
+    groupName = group.name;
+    break;
+  }
+}
+
+if (!comp) {
+  return Astro.redirect('/');
+}
+
+// Get last 90 days with data
+const daysWithData = comp.dailyData.filter(d => d.uptimePercent >= 0 && d.totalChecks > 0);
+---
+
+<Layout title={`${comp.name} — Soma Status`} description={`Uptime and performance history for ${comp.name}`}>
+  <Header />
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+    <!-- Back link -->
+    <a href="/" class="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text-secondary transition-colors">
+      &larr; Back to status
+    </a>
+
+    <!-- Component header -->
+    <div class="glass p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-xs text-text-muted uppercase tracking-wider mb-1">{groupName}</p>
+          <h1 class="text-xl font-semibold text-text-primary">{comp.name}</h1>
+        </div>
+        <StatusBadge status={comp.status} size="md" />
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="text-center p-3 rounded-lg bg-white/[0.03]">
+          <p class="text-xs text-text-muted mb-1">Uptime</p>
+          <p class="font-mono text-lg font-semibold text-text-primary">{formatUptime(comp.uptimePercent)}</p>
+        </div>
+        <div class="text-center p-3 rounded-lg bg-white/[0.03]">
+          <p class="text-xs text-text-muted mb-1">Avg Response</p>
+          <p class="font-mono text-lg font-semibold text-text-primary">{formatResponseTime(comp.avgResponseTime)}</p>
+        </div>
+        <div class="text-center p-3 rounded-lg bg-white/[0.03]">
+          <p class="text-xs text-text-muted mb-1">Days Tracked</p>
+          <p class="font-mono text-lg font-semibold text-text-primary">{daysWithData.length}</p>
+        </div>
+      </div>
+
+      <!-- Uptime bar -->
+      <UptimeBar dailyData={comp.dailyData} />
+    </div>
+
+    <!-- Response time sparkline -->
+    {daysWithData.length >= 2 && (
+      <div class="glass p-6">
+        <h2 class="text-sm font-semibold text-text-primary uppercase tracking-wider mb-4">Response Time Trend</h2>
+        <ResponseTime dailyData={comp.dailyData} />
+      </div>
+    )}
+
+    <!-- Daily breakdown table -->
+    <div class="glass overflow-hidden">
+      <div class="px-5 py-4 border-b border-border-subtle/50">
+        <h2 class="text-sm font-semibold text-text-primary uppercase tracking-wider">Daily History</h2>
+      </div>
+      <div class="divide-y divide-border-subtle/30">
+        {daysWithData.slice().reverse().slice(0, 30).map(day => (
+          <div class="px-5 py-3 flex items-center justify-between text-sm">
+            <span class="text-text-secondary">{formatDateFull(day.date)}</span>
+            <div class="flex items-center gap-4">
+              <span class="font-mono text-xs text-text-muted">{formatResponseTime(day.avgResponseTime)}</span>
+              <span class="font-mono text-xs w-16 text-right" style={`color: ${getUptimeColor(day.uptimePercent)}`}>
+                {formatUptime(day.uptimePercent)}
+              </span>
+            </div>
+          </div>
+        ))}
+        {daysWithData.length === 0 && (
+          <div class="px-5 py-8 text-center text-text-muted text-sm">
+            No data available yet. Check back after the first monitoring cycle.
+          </div>
+        )}
+      </div>
+    </div>
+
+    <a href="/" class="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text-secondary transition-colors">
+      &larr; Back to status
+    </a>
+  </main>
+
+  <Footer />
+</Layout>

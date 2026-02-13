@@ -1,0 +1,27 @@
+---
+import { BRAND } from '../../lib/constants';
+---
+
+<header class="border-b border-border-subtle/50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3 group">
+      <!-- Soma Logo Mark -->
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-soma-blue via-soma-purple to-soma-orange flex items-center justify-center">
+        <span class="text-white font-bold text-sm">S</span>
+      </div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-semibold text-text-primary group-hover:text-white transition-colors">Soma</span>
+        <span class="text-text-secondary text-sm">Status</span>
+      </div>
+    </a>
+
+    <a
+      href={BRAND.siteUrl}
+      class="text-sm text-text-secondary hover:text-text-primary transition-colors"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      somaweather.com &rarr;
+    </a>
+  </div>
+</header>

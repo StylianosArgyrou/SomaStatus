@@ -1,0 +1,48 @@
+---
+import type { DayData } from '../../lib/types';
+
+interface Props {
+  dailyData: DayData[];
+}
+
+const { dailyData } = Astro.props;
+
+// Build sparkline from last 30 days with data
+const dataPoints = dailyData
+  .filter(d => d.uptimePercent >= 0 && d.avgResponseTime > 0)
+  .slice(-30)
+  .map(d => d.avgResponseTime);
+
+if (dataPoints.length < 2) {
+  // Not enough data for a sparkline
+}
+
+const maxVal = Math.max(...dataPoints, 1);
+const minVal = Math.min(...dataPoints, 0);
+const range = maxVal - minVal || 1;
+const svgWidth = 60;
+const svgHeight = 20;
+
+const points = dataPoints.map((val, i) => {
+  const x = (i / (dataPoints.length - 1)) * svgWidth;
+  const y = svgHeight - ((val - minVal) / range) * (svgHeight - 4) - 2;
+  return `${x},${y}`;
+}).join(' ');
+---
+
+{dataPoints.length >= 2 && (
+  <svg
+    viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+    class="w-[60px] h-[20px]"
+    preserveAspectRatio="none"
+  >
+    <polyline
+      points={points}
+      fill="none"
+      stroke="#2563EB"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+)}
