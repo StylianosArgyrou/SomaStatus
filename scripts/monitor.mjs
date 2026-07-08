@@ -217,6 +217,44 @@ function cleanupOldData() {
   }
 }
 
+// ─── Alert webhook (Plan 05) ──────────────────────────────────
+// On a `down` result, POST to the Azure Monitor action-group webhook receiver
+// so an outage pages a human instead of only updating a JSON file. No-op when
+// STATUS_ALERT_WEBHOOK is unset (local runs) or when nothing is down.
+async function postDownAlert(checkEntry, downIds) {
+  const webhook = process.env.STATUS_ALERT_WEBHOOK;
+  if (!webhook || downIds.length === 0) return;
+
+  const payload = {
+    source: 'SomaStatusMonitor',
+    status: 'down',
+    timestamp: checkEntry.timestamp,
+    down_components: downIds.map((id) => ({
+      id,
+      statusCode: checkEntry.results[id]?.statusCode ?? 0,
+      responseTime: checkEntry.results[id]?.responseTime ?? null,
+    })),
+    message: `Soma health check reported ${downIds.length} component(s) DOWN`,
+  };
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(webhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+    console.log(`Alert webhook POST -> HTTP ${res.status}`);
+  } catch (err) {
+    // Never let a webhook failure fail the monitor run / commit.
+    console.error(`Alert webhook POST failed: ${err.message}`);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // ─── Main ─────────────────────────────────────────────────────
 async function main() {
   // Ensure directories exist
@@ -228,12 +266,17 @@ async function main() {
   const entries = Object.entries(checkEntry.results);
   const up = entries.filter(([, r]) => r.status === 'up').length;
   const degraded = entries.filter(([, r]) => r.status === 'degraded').length;
-  const down = entries.filter(([, r]) => r.status === 'down').length;
+  const downIds = entries.filter(([, r]) => r.status === 'down').map(([id]) => id);
+  const down = downIds.length;
 
   console.log(`\nResults: ${up} up, ${degraded} degraded, ${down} down (${entries.length} total)`);
 
   updateDailyFile(checkEntry);
   cleanupOldData();
+
+  // Page on outage (Plan 05) — after persisting data so a webhook error can't
+  // lose the check result.
+  await postDownAlert(checkEntry, downIds);
 
   console.log('Done.');
 }

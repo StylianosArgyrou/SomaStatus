@@ -23,6 +23,10 @@ jobs:
           node-version: '20'
 
       - name: Run health checks
+        env:
+          # Plan 05: when set (repo secret), a `down` result POSTs to the Azure
+          # Monitor action-group webhook receiver so an outage pages a human.
+          STATUS_ALERT_WEBHOOK: ${{ secrets.STATUS_ALERT_WEBHOOK }}
         run: node scripts/monitor.mjs
 
       - name: Commit results
