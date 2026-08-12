@@ -2900,259 +2900,404 @@
           "statusCode": 200
         }
       }
+    },
+    {
+      "timestamp": "2026-08-12T23:35:21.559Z",
+      "results": {
+        "api-health": {
+          "status": "down",
+          "responseTime": 85,
+          "statusCode": 0
+        },
+        "api-liveness": {
+          "status": "down",
+          "responseTime": 27,
+          "statusCode": 0
+        },
+        "cache-system": {
+          "status": "down",
+          "responseTime": 30,
+          "statusCode": 0
+        },
+        "resolve": {
+          "status": "down",
+          "responseTime": 35,
+          "statusCode": 0
+        },
+        "precipitation": {
+          "status": "down",
+          "responseTime": 54,
+          "statusCode": 0
+        },
+        "minutecast": {
+          "status": "down",
+          "responseTime": 62,
+          "statusCode": 0
+        },
+        "historical": {
+          "status": "down",
+          "responseTime": 81,
+          "statusCode": 0
+        },
+        "radar": {
+          "status": "down",
+          "responseTime": 92,
+          "statusCode": 0
+        },
+        "smart-alerts": {
+          "status": "down",
+          "responseTime": 98,
+          "statusCode": 0
+        },
+        "severe": {
+          "status": "down",
+          "responseTime": 107,
+          "statusCode": 0
+        },
+        "safety": {
+          "status": "down",
+          "responseTime": 117,
+          "statusCode": 0
+        },
+        "aqi": {
+          "status": "down",
+          "responseTime": 119,
+          "statusCode": 0
+        },
+        "earthquakes": {
+          "status": "down",
+          "responseTime": 127,
+          "statusCode": 0
+        },
+        "wildfires": {
+          "status": "down",
+          "responseTime": 126,
+          "statusCode": 0
+        },
+        "website": {
+          "status": "down",
+          "responseTime": 152,
+          "statusCode": 0
+        },
+        "marine": {
+          "status": "down",
+          "responseTime": 148,
+          "statusCode": 0
+        },
+        "storms": {
+          "status": "down",
+          "responseTime": 150,
+          "statusCode": 0
+        },
+        "space-weather": {
+          "status": "down",
+          "responseTime": 160,
+          "statusCode": 0
+        },
+        "aurora": {
+          "status": "down",
+          "responseTime": 160,
+          "statusCode": 0
+        },
+        "iss": {
+          "status": "down",
+          "responseTime": 166,
+          "statusCode": 0
+        },
+        "apod": {
+          "status": "down",
+          "responseTime": 165,
+          "statusCode": 0
+        },
+        "gardening": {
+          "status": "down",
+          "responseTime": 175,
+          "statusCode": 0
+        },
+        "pollen": {
+          "status": "down",
+          "responseTime": 175,
+          "statusCode": 0
+        },
+        "aviation": {
+          "status": "down",
+          "responseTime": 179,
+          "statusCode": 0
+        },
+        "noaa": {
+          "status": "up",
+          "responseTime": 295,
+          "statusCode": 200
+        },
+        "open-meteo": {
+          "status": "up",
+          "responseTime": 568,
+          "statusCode": 200
+        },
+        "usgs": {
+          "status": "up",
+          "responseTime": 601,
+          "statusCode": 200
+        },
+        "nasa": {
+          "status": "up",
+          "responseTime": 735,
+          "statusCode": 200
+        }
+      }
     }
   ],
   "summary": {
     "website": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 0,
-      "downChecks": 20,
+      "downChecks": 21,
       "uptimePercent": 0,
       "avgResponseTime": 144,
       "p95ResponseTime": 236
     },
     "noaa": {
-      "totalChecks": 20,
-      "upChecks": 20,
+      "totalChecks": 21,
+      "upChecks": 21,
       "degradedChecks": 0,
       "downChecks": 0,
       "uptimePercent": 100,
-      "avgResponseTime": 321,
+      "avgResponseTime": 319,
       "p95ResponseTime": 396
     },
     "nasa": {
-      "totalChecks": 20,
-      "upChecks": 20,
+      "totalChecks": 21,
+      "upChecks": 21,
       "degradedChecks": 0,
       "downChecks": 0,
       "uptimePercent": 100,
-      "avgResponseTime": 470,
-      "p95ResponseTime": 617
+      "avgResponseTime": 483,
+      "p95ResponseTime": 725
     },
     "open-meteo": {
-      "totalChecks": 20,
-      "upChecks": 20,
+      "totalChecks": 21,
+      "upChecks": 21,
       "degradedChecks": 0,
       "downChecks": 0,
       "uptimePercent": 100,
-      "avgResponseTime": 674,
+      "avgResponseTime": 669,
       "p95ResponseTime": 905
     },
     "usgs": {
-      "totalChecks": 20,
-      "upChecks": 20,
+      "totalChecks": 21,
+      "upChecks": 21,
       "degradedChecks": 0,
       "downChecks": 0,
       "uptimePercent": 100,
-      "avgResponseTime": 695,
+      "avgResponseTime": 691,
       "p95ResponseTime": 845
     },
     "cache-system": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19575,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18644,
       "p95ResponseTime": 60000
     },
     "api-liveness": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19595,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18663,
       "p95ResponseTime": 60001
     },
     "aqi": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19620,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18692,
       "p95ResponseTime": 60001
     },
     "smart-alerts": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19631,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18701,
       "p95ResponseTime": 60001
     },
     "severe": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19664,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18732,
       "p95ResponseTime": 60001
     },
     "historical": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19645,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18713,
       "p95ResponseTime": 60001
     },
     "wildfires": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19614,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18686,
       "p95ResponseTime": 60002
     },
     "gardening": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19727,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18796,
       "p95ResponseTime": 60002
     },
     "minutecast": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19629,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18698,
       "p95ResponseTime": 60001
     },
     "api-health": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19660,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18727,
       "p95ResponseTime": 60001
     },
     "aviation": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19891,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18952,
       "p95ResponseTime": 60002
     },
     "iss": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 3,
-      "downChecks": 17,
-      "uptimePercent": 15,
-      "avgResponseTime": 20594,
+      "downChecks": 18,
+      "uptimePercent": 14.29,
+      "avgResponseTime": 19621,
       "p95ResponseTime": 60002
     },
     "radar": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19830,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18890,
       "p95ResponseTime": 60001
     },
     "aurora": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19896,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18956,
       "p95ResponseTime": 60002
     },
     "pollen": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19911,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18972,
       "p95ResponseTime": 60002
     },
     "safety": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19794,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18857,
       "p95ResponseTime": 60001
     },
     "earthquakes": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19854,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18914,
       "p95ResponseTime": 60001
     },
     "resolve": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19812,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18871,
       "p95ResponseTime": 60000
     },
     "storms": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19958,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 19015,
       "p95ResponseTime": 60002
     },
     "precipitation": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 19872,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 18928,
       "p95ResponseTime": 60001
     },
     "marine": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 5,
-      "downChecks": 15,
-      "uptimePercent": 25,
-      "avgResponseTime": 20169,
+      "downChecks": 16,
+      "uptimePercent": 23.81,
+      "avgResponseTime": 19216,
       "p95ResponseTime": 60001
     },
     "space-weather": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 0,
-      "downChecks": 20,
+      "downChecks": 21,
       "uptimePercent": 0,
-      "avgResponseTime": 21078,
+      "avgResponseTime": 20082,
       "p95ResponseTime": 60002
     },
     "apod": {
-      "totalChecks": 20,
+      "totalChecks": 21,
       "upChecks": 0,
       "degradedChecks": 0,
-      "downChecks": 20,
+      "downChecks": 21,
       "uptimePercent": 0,
-      "avgResponseTime": 21082,
+      "avgResponseTime": 20086,
       "p95ResponseTime": 60002
     }
   }
